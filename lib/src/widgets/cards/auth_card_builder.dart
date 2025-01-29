@@ -450,6 +450,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                 ? _changeCard(_loginPageIndex)
                 : _changeCard(_additionalSignUpIndex),
             loadingController: formController,
+            loginTheme: widget.loginTheme,
             onSubmitCompleted: () {
               if (widget.loginAfterSignUp) {
                 _forwardChangeRouteAnimation(_confirmSignUpCardKey).then((_) {

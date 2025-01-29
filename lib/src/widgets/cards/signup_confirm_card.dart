@@ -9,6 +9,7 @@ class _ConfirmSignupCard extends StatefulWidget {
     required this.loadingController,
     required this.keyboardType,
     required this.initialIsoCode,
+    this.loginTheme,
   });
 
   final bool loginAfterSignUp;
@@ -17,6 +18,7 @@ class _ConfirmSignupCard extends StatefulWidget {
   final AnimationController loadingController;
   final TextInputType? keyboardType;
   final String? initialIsoCode;
+  final LoginTheme? loginTheme;
 
   @override
   _ConfirmSignupCardState createState() => _ConfirmSignupCardState();
@@ -69,7 +71,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     );
 
     if (error != null) {
-      if (context.mounted) {
+      if (mounted) {
         showErrorToast(context, messages.flushbarTitleError, error);
       }
       setState(() => _isSubmitting = false);
@@ -77,7 +79,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
       return false;
     }
 
-    if (context.mounted) {
+    if (mounted) {
       showSuccessToast(
         context,
         messages.flushbarTitleSuccess,
@@ -115,7 +117,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     );
 
     if (error != null) {
-      if (context.mounted) {
+      if (mounted) {
         showErrorToast(context, messages.flushbarTitleError, error);
       }
 
@@ -124,7 +126,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
       return false;
     }
 
-    if (context.mounted) {
+    if (mounted) {
       showSuccessToast(
         context,
         messages.flushbarTitleSuccess,
@@ -182,14 +184,15 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     );
   }
 
-  Widget _buildBackButton(ThemeData theme, LoginMessages messages) {
+  Widget _buildBackButton(
+      ThemeData theme, LoginMessages messages, LoginTheme? loginTheme) {
     return ScaleTransition(
       scale: widget.loadingController,
       child: MaterialButton(
         onPressed: !_isSubmitting ? widget.onBack : null,
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        textColor: theme.primaryColor,
+        textColor: loginTheme?.switchAuthTextColor ?? theme.primaryColor,
         child: Text(messages.goBackButton),
       ),
     );
@@ -232,7 +235,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
                 const SizedBox(height: 10),
                 _buildResendCode(theme, messages),
                 _buildConfirmButton(theme, messages),
-                _buildBackButton(theme, messages),
+                _buildBackButton(theme, messages, widget.loginTheme),
               ],
             ),
           ),
